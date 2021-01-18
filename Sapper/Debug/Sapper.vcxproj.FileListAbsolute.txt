@@ -1,0 +1,2 @@
+E:\Евгений\c++ проекты\Sapper\Debug\Sapper.exe
+E:\Евгений\c++ проекты\Sapper\Debug\Sapper.pdb

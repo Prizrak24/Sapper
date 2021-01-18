@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sapper", "Sapper.vcxproj", "{4259E3DF-87EE-43BE-B6BF-90339B20F4FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4259E3DF-87EE-43BE-B6BF-90339B20F4FF}.Debug|x64.ActiveCfg = Debug|x64
+		{4259E3DF-87EE-43BE-B6BF-90339B20F4FF}.Debug|x64.Build.0 = Debug|x64
+		{4259E3DF-87EE-43BE-B6BF-90339B20F4FF}.Debug|x86.ActiveCfg = Debug|Win32
+		{4259E3DF-87EE-43BE-B6BF-90339B20F4FF}.Debug|x86.Build.0 = Debug|Win32
+		{4259E3DF-87EE-43BE-B6BF-90339B20F4FF}.Release|x64.ActiveCfg = Release|x64
+		{4259E3DF-87EE-43BE-B6BF-90339B20F4FF}.Release|x64.Build.0 = Release|x64
+		{4259E3DF-87EE-43BE-B6BF-90339B20F4FF}.Release|x86.ActiveCfg = Release|Win32
+		{4259E3DF-87EE-43BE-B6BF-90339B20F4FF}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DEEC1523-AB10-4108-96AB-57186F0F85D3}
+	EndGlobalSection
+EndGlobal
