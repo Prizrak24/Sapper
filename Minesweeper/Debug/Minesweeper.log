@@ -1,0 +1,4 @@
+﻿  MinesweeperGame.cpp
+E:\Евгений\c++ проекты\Minesweeper\MinesweeperGame.cpp(364,60): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+E:\Евгений\c++ проекты\Minesweeper\MinesweeperGame.cpp(364,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  Minesweeper.vcxproj -> E:\Евгений\c++ проекты\Minesweeper\Debug\Minesweeper.exe

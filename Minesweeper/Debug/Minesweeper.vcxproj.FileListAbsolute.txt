@@ -1,0 +1,2 @@
+E:\Евгений\c++ проекты\Minesweeper\Debug\Minesweeper.exe
+E:\Евгений\c++ проекты\Minesweeper\Debug\Minesweeper.pdb

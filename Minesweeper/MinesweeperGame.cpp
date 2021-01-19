@@ -1,0 +1,596 @@
+#include "MinesweeperGame.h"
+
+MinesweeperGame::MinesweeperGame()
+{
+	minesweeperWidth = 8;
+	minesweeperHeight = 8;
+	mines = 10;
+	position = 0;
+}
+
+void MinesweeperGame::Rendering(RenderWindow& window)
+{
+	int position = windowMenu(window);
+	while (window.isOpen())
+	{
+		Sleep(50);
+		if (position == 0)
+			position = windowMenu(window);
+		if (position == 1)
+			position = windowGame(window);
+		if (position == 2)
+			position = windowSettings(window);
+		if (position == 3)
+			position = windowSettings(window);
+		if(position > 3)
+			position = 0;
+	}
+
+}
+
+int MinesweeperGame::windowMenu(RenderWindow& window)
+{
+	int a = 10;
+	int w = 32;
+
+	Texture button, backgroundTexture;
+	button.loadFromFile("Image/128.png");
+	backgroundTexture.loadFromFile("Image/2.jpg");
+	Sprite spriteB1(button), spriteB2(button), background(backgroundTexture);
+	background.setPosition(6, 0);
+	spriteB1.setTextureRect(IntRect(0, 0, 250, 50));
+	spriteB1.setPosition(600,300);
+	spriteB2.setTextureRect(IntRect(0, 100, 215, 50));
+	spriteB2.setPosition(600, 360);
+	bool isMenu = true;
+	while (window.isOpen())
+	{
+		if (!isMenu) break;
+		Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == Event::Closed)
+				window.close();
+		}
+		spriteB1.setTextureRect(IntRect(0, 0, 250, 50));
+		position = 0;
+		if (IntRect(600, 300, 250, 50).contains(Mouse::getPosition(window))) { spriteB1.setTextureRect(IntRect(0, 50, 250, 50)); position = 1; }
+		spriteB2.setTextureRect(IntRect(0, 100, 215, 50));
+		if (IntRect(600, 360, 250, 50).contains(Mouse::getPosition(window))) { spriteB2.setTextureRect(IntRect(0, 150, 250, 50)); position = 2; }
+
+		if (Mouse::isButtonPressed(Mouse::Left))
+		{
+			if (position > 0)
+				isMenu = false;
+		}
+		window.clear();
+		window.draw(background);
+		window.draw(spriteB1);
+		window.draw(spriteB2);
+		window.display();
+	}
+	if (position == 1)
+		return 1;
+	if (position == 2)
+		return 2;
+	return 0;
+}
+
+int MinesweeperGame::windowSettings(RenderWindow& window)
+{
+
+	Texture button, button2, backgroundTexture;
+	button.loadFromFile("Image/130.png");
+	button2.loadFromFile("Image/131.png");
+	backgroundTexture.loadFromFile("Image/2.jpg");
+	Sprite spriteB1(button), spriteB2(button), spriteB3(button), spriteB4(button2), background(backgroundTexture);
+	background.setPosition(6, 0);
+	spriteB1.setPosition(520, 200);
+	spriteB2.setPosition(520, 310);
+	spriteB3.setPosition(520, 420);
+	spriteB4.setPosition(10, 10);
+
+	bool isMenu = true;
+	Sleep(50);
+	while (window.isOpen())
+	{
+		if (!isMenu)break;
+		Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == Event::Closed)
+				window.close();
+		}
+		int position1 = 0;
+		spriteB1.setTextureRect(IntRect(0, 0, 326, 100));
+		if (IntRect(520, 200, 326, 100).contains(Mouse::getPosition(window))) { spriteB1.setTextureRect(IntRect(0, 105, 326, 100)); position1 = 1; }
+		spriteB2.setTextureRect(IntRect(0, 210, 326, 100));
+		if (IntRect(520, 310, 326, 100).contains(Mouse::getPosition(window))) { spriteB2.setTextureRect(IntRect(0, 315, 326, 100)); position1 = 2; }
+		spriteB3.setTextureRect(IntRect(0, 420, 326, 100));
+		if (IntRect(520, 420, 326, 100).contains(Mouse::getPosition(window))) { spriteB3.setTextureRect(IntRect(0, 525, 326, 100)); position1 = 3; }
+		spriteB4.setTextureRect(IntRect(0, 0, 326, 100));
+		if (IntRect(0, 0, 326, 100).contains(Mouse::getPosition(window))) { spriteB4.setTextureRect(IntRect(0, 105, 326, 100)); position1 = 4; }
+		
+		if (Mouse::isButtonPressed(Mouse::Left))
+		{
+			if (position1 > 0)
+				isMenu = false;
+			if (position1 == 1) 
+			{
+				minesweeperWidth = 8;
+				minesweeperHeight = 8;
+				mines = 10;
+			}
+			if (position1 == 2)
+			{
+				minesweeperWidth = 16;
+				minesweeperHeight = 16;
+				mines = 40;
+			}
+			if (position1 == 3)
+			{
+				minesweeperWidth = 30;
+				minesweeperHeight = 16;
+				mines = 99;
+			}
+			if (position1 == 4)
+			{
+				position = 0;
+			}
+		}
+		window.clear();
+		window.draw(background);
+		window.draw(spriteB1);
+		window.draw(spriteB2);
+		window.draw(spriteB3);
+		window.draw(spriteB4);
+		window.display();
+	}
+	if (position == 3)return 1;
+	return 0;
+}
+
+int MinesweeperGame::windowGame(RenderWindow& window)
+{
+	Sleep(50);
+
+	Texture button, button2, button3;
+	button.loadFromFile("Image/128.png");
+	button2.loadFromFile("Image/128.png");
+	button3.loadFromFile("Image/131.png");
+	Sprite spriteB1(button), spriteB2(button2), spriteB3(button3);
+	spriteB1.setTextureRect(IntRect(0, 0, 220, 50));
+	spriteB1.setPosition(10, 10);
+	spriteB2.setTextureRect(IntRect(0, 100, 220, 50));
+	spriteB2.setPosition(10, 65);
+	spriteB3.setTextureRect(IntRect(0, 0, 325, 100));
+	spriteB3.setPosition(230, 10);
+
+	int xPosition = 200;
+	int yPosition = 100;
+	int w = 32;
+	int minesR = mines;
+	String str;
+	int gameOver = 0;
+	bool isMenu = true;
+	bool startGame = true;
+	int** gridLogic = new int* [minesweeperWidth];
+
+	for (int i = 0; i < minesweeperWidth; i++)
+		gridLogic[i] = new int[minesweeperHeight];
+
+	for (int i = 0; i < minesweeperWidth; i++)
+	{
+		for (int j = 0; j < minesweeperHeight; j++)
+			gridLogic[i][j] = 0;
+	}
+
+	int** gridView = new int* [minesweeperWidth];
+
+	for (int i = 0; i < minesweeperWidth; i++)
+		gridView[i] = new int[minesweeperHeight];
+
+	//
+	CircleShape shape(50.f);
+	shape.setFillColor(Color::Green);
+	CircleShape shape1(50.f);
+	shape1.setFillColor(Color::Green);
+	shape1.setPosition(110, 0);
+	CircleShape shape2(50.f);
+	shape2.setFillColor(Color::Green);
+	shape2.setPosition(220, 0);
+
+	Font font;//шрифт 
+	font.loadFromFile("CyrilicOld.TTF");
+	
+	//передаем нашему шрифту файл шрифта
+	Text text,textMines;
+	text.setFont(font);
+	str = to_string(minesR);
+	text.setString(str);
+	text.setCharacterSize(24);
+	text.setFillColor(Color::Red);
+	text.setStyle(Text::Bold | Text::Underlined);
+	text.setPosition(400,120);
+
+	textMines.setFont(font);
+	textMines.setString("Бомбы - ");
+	textMines.setCharacterSize(24);
+	textMines.setFillColor(Color::Red);
+	textMines.setStyle(Text::Bold | Text::Underlined);
+	textMines.setPosition(300, 120);
+	//
+	// Загрузка текстуры и создание спрайта
+	Texture t;
+	t.loadFromFile("Image/tiles.jpg");
+	Sprite s(t);
+
+	for (int i = 0; i < minesweeperWidth; i++)
+		for (int j = 0; j < minesweeperHeight; j++)
+		{
+			gridView[i][j] = 10;
+		}
+	Sleep(100);
+	while (window.isOpen())
+	{
+		if (!isMenu)break;
+
+		// Получаем координаты курсора мышки относительно окна нашего приложения
+		Vector2i pos = Mouse::getPosition(window);
+		
+		int x = -1;
+		int y = -1;
+		Event e;
+		while (window.pollEvent(e))
+		{
+			if (e.type == Event::Closed)
+				window.close();
+
+			// Определяем, была ли нажата кнопка мыши?
+			if (e.type == Event::MouseButtonPressed){
+
+				// Если была нажата левая кнопка мыши, то открываем клетку
+				if (e.key.code == Mouse::Left || e.key.code == Mouse::Right)
+				{ 
+					}
+					if (IntRect(((0 + 2) * w) + xPosition, ((0 + 2) * w) + yPosition,
+						(minesweeperWidth * w),
+						(minesweeperHeight * w)).contains(Mouse::getPosition(window)))
+					{
+						for (int i = 0; i < minesweeperWidth; i++){
+							for (int j = 0; j < minesweeperHeight; j++)
+							{
+								if (IntRect(((i + 2) * w) + xPosition, 
+									((j + 2) * w) + yPosition, w, w)
+									.contains(Mouse::getPosition(window))) 
+								{ 
+									shape.setFillColor(Color::Red); x = i; y = j; 
+									if (startGame)
+									{
+										startGame = false;
+
+										for (int i = 0; i < mines;)
+										{
+											int naberW = rand() % (minesweeperWidth - 1) + 1;
+											int naberH = rand() % (minesweeperHeight - 1) + 1;
+											if (gridLogic[naberW][naberH] == 0 && naberW != x && naberH !=y)
+											{
+												gridLogic[naberW][naberH] = 9;
+												i++;
+											}
+										}
+										// Подсчет мин вокруг каждой клетки	
+										for (int i = 0; i < minesweeperWidth; i++) {
+											for (int j = 0; j < minesweeperHeight; j++)
+											{
+												if (gridLogic[i][j] == 9)
+												{
+													if (i != 0)
+													{
+														if (gridLogic[i - 1][j] != 9)gridLogic[i - 1][j] += 1;
+													}
+													if (j != 0)
+													{
+														if (gridLogic[i][j - 1] != 9)gridLogic[i][j - 1] += 1;
+													}
+													if (i != minesweeperWidth - 1)
+													{
+														if (gridLogic[i + 1][j] != 9)gridLogic[i + 1][j] += 1;
+													}
+													if (j != minesweeperHeight - 1)
+													{
+														if (gridLogic[i][j + 1] != 9)gridLogic[i][j + 1] += 1;
+													}
+													if (i != 0 && j != 0)
+													{
+														if (gridLogic[i - 1][j - 1] != 9)gridLogic[i - 1][j - 1] += 1;
+													}
+													if (i != 0 && j != minesweeperHeight - 1)
+													{
+														if (gridLogic[i - 1][j + 1] != 9)gridLogic[i - 1][j + 1] += 1;
+													}
+													if (i != minesweeperWidth - 1 && j != 0)
+													{
+														if (gridLogic[i + 1][j - 1] != 9)gridLogic[i + 1][j - 1] += 1;
+													}
+													if (i != minesweeperWidth - 1 && j != minesweeperHeight - 1)
+													{
+														if (gridLogic[i + 1][j + 1] != 9)gridLogic[i + 1][j + 1] += 1;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+					}
+					if(e.key.code == Mouse::Left)
+					{
+						traversalRecursion1(gridLogic, gridView, x, y);
+						checkMine(gridLogic, gridView, x, y, gameOver);
+						if (x < minesweeperWidth && y < minesweeperHeight && x > -1 && y > -1)
+						{
+							if (gridLogic[x][y] == 9)
+								gameOver = 1;
+							gridView[x][y] = gridLogic[x][y];
+						}	
+					}
+					// Если была нажата правая кнопка мыши, то отображаем флажок
+					if (e.key.code == Mouse::Right) 
+					{
+						if (x < minesweeperWidth && y < minesweeperHeight && x > -1 && y > -1)
+						{
+							if (gridView[x][y] == 10 && minesR >0)
+							{
+								minesR--;
+								str = to_string(minesR);
+								text.setString(str);
+								gridView[x][y] = 11;
+							}
+							else if (gridView[x][y] == 11 && minesR <= mines)
+							{
+								minesR++;
+								str = to_string(minesR);
+								text.setString(str);
+								gridView[x][y] = 10;
+							}
+						}
+					}
+				}
+			}
+		}
+		//
+		shape.setFillColor(Color::Green);
+		shape1.setFillColor(Color::Green);
+		shape2.setFillColor(Color::Green);
+		position = 0;
+		spriteB1.setTextureRect(IntRect(0, 0, 220, 50));
+		spriteB2.setTextureRect(IntRect(0, 100, 220, 50));
+		spriteB3.setTextureRect(IntRect(0, 0, 325, 100));
+		if (IntRect(10, 10, 220, 50).contains(Mouse::getPosition(window))) { spriteB1.setTextureRect(IntRect(0, 50, 220, 50)); position = 1; }
+		if (IntRect(10, 65, 220, 50).contains(Mouse::getPosition(window))) { spriteB2.setTextureRect(IntRect(0, 150, 220, 50)); position = 3; }
+		if (IntRect(230, 10, 325, 100).contains(Mouse::getPosition(window))) { spriteB3.setTextureRect(IntRect(0, 105, 325, 100)); position = 4; }
+		if (Mouse::isButtonPressed(Mouse::Left))
+		{
+			if (position > 0)
+				isMenu = false;
+			if (position == 4)
+				position = 0;
+		}
+		//
+
+		window.clear(Color::White);
+		for (int i = 0; i < minesweeperWidth; i++)
+			for (int j = 0; j < minesweeperHeight; j++)
+			{
+				//gridView[i][j] = gridLogic[i][j];
+				if(gameOver==1)
+					gridView[i][j] = gridLogic[i][j];
+				s.setTextureRect(IntRect(gridView[i][j] * w, 0, w, w));
+				s.setPosition(((i + 2) * w) + xPosition, ((j + 2) * w) + yPosition);
+				window.draw(s);
+			}
+		//
+		
+		window.draw(text);
+		window.draw(textMines);
+		window.draw(spriteB1);
+		window.draw(spriteB2);
+		window.draw(spriteB3);
+		//
+		window.display();
+	}
+	for (int i = 0; i < minesweeperWidth; i++)
+		delete[]gridLogic[i];
+	delete[]gridLogic;
+
+	for (int i = 0; i < minesweeperWidth; i++)
+		delete[]gridView[i];
+	delete[]gridView;
+	if (position == 1) return 1;
+	if (position == 3) return 3;
+	return 0;
+}
+
+void MinesweeperGame::traversalRecursion1(int**& gridLogic, int**& gridView, int X, int Y)
+{
+	int x = X;
+	int y = Y;
+	if (gridLogic[x][y] < 9) 
+	{
+		gridView[x][y] = gridLogic[x][y];
+
+			if (x + 1 < minesweeperWidth)
+			{
+				if (gridLogic[x + 1][y] == 0 && gridView[x + 1][y] != 0)
+				{
+					x++;
+					traversalRecursion1(gridLogic, gridView, x, y);
+				}	
+				else
+				{
+					if(gridLogic[x + 1][y] != 9 && gridLogic[x][y] == 0)
+						gridView[x + 1][y] = gridLogic[x + 1][y];
+				}
+			}
+
+			x = X;
+			y = Y;
+
+			if (x - 1 >= 0)
+			{
+				if (gridLogic[x - 1][y] == 0 && gridView[x - 1][y] != 0)
+				{
+					x--;
+					traversalRecursion1(gridLogic, gridView, x, y);
+				}
+				else
+				{
+					if (gridLogic[x - 1][y] != 9 && gridLogic[x][y] == 0)
+						gridView[x - 1][y] = gridLogic[x - 1][y];
+					
+				}
+			}
+
+			x = X;
+			y = Y;
+
+			if (y + 1 < minesweeperWidth)
+			{
+				if (gridLogic[x][y+1] == 0 && gridView[x][y+1] != 0)
+				{
+					y++;
+					traversalRecursion1(gridLogic, gridView, x, y);
+				}
+				else
+				{
+					if (gridLogic[x][y+1] != 9 && gridLogic[x][y] == 0)
+						gridView[x][y+1] = gridLogic[x][y+1];
+				}
+			}
+
+			x = X;
+			y = Y;
+
+			if (y - 1 >= 0)
+			{
+				if (gridLogic[x][y-1] == 0 && gridView[x][y-1] != 0)
+				{
+					y--;
+					traversalRecursion1(gridLogic, gridView, x, y);
+				}
+				else
+				{
+					if (gridLogic[x][y-1] != 9 && gridLogic[x][y] == 0)
+						gridView[x][y-1] = gridLogic[x][y-1];
+
+				}
+			}
+	}
+}
+
+void MinesweeperGame::checkMine(int**& gridLogic, int**& gridView, int x, int y, int & gameOver)
+{
+	int found = 0;
+	if (gridLogic[x][y] > 0 && gridLogic[x][y] < 9)
+	{
+		if (x != 0)
+		{
+			if (gridView[x - 1][y] == 11)found += 1;
+		}
+		if (y != 0)
+		{
+			if (gridView[x][y - 1] == 11)found += 1;
+		}
+		if (x != minesweeperWidth - 1)
+		{
+			if (gridView[x + 1][y] == 11)found += 1;
+		}
+		if (y != minesweeperHeight - 1)
+		{
+			if (gridView[x][y + 1] == 11)found += 1;
+		}
+		if (x != 0 && y != 0)
+		{
+			if (gridView[x - 1][y - 1] == 11)found += 1;
+		}
+		if (x != 0 && y != minesweeperHeight - 1)
+		{
+			if (gridView[x - 1][y + 1] == 11)found += 1;
+		}
+		if (x != minesweeperWidth - 1 && y != 0)
+		{
+			if (gridView[x + 1][y - 1] == 11)found += 1;
+		}
+		if (x != minesweeperWidth - 1 && y != minesweeperHeight - 1)
+		{
+			if (gridView[x + 1][y + 1] == 11)found += 1;
+		}
+		if(gridView[x][y] == found)
+		{
+			openCells(gridLogic, gridView, x, y, gameOver);
+		}
+	}
+}
+
+void MinesweeperGame::openCells(int**& gridLogic, int**& gridView, int x, int y, int & gameOver)
+{
+	if (x != 0)
+	{
+		if (gridView[x - 1][y] != 11)
+			gridView[x - 1][y] = gridLogic[x - 1][y];
+		if (gridLogic[x - 1][y] == 9)
+			gameOver = 1;
+	}
+	if (y != 0)
+	{
+		if(gridView[x][y - 1] != 11)
+			gridView[x][y - 1] = gridLogic[x][y - 1];
+		if (gridLogic[x][y - 1] == 9)
+			gameOver = 1;
+	}
+	if (x != minesweeperWidth - 1)
+	{
+		if (gridView[x + 1][y] != 11)
+			gridView[x + 1][y] = gridLogic[x + 1][y];
+		if (gridLogic[x + 1][y] == 9)
+			gameOver = 1;
+	}
+	if (y != minesweeperHeight - 1)
+	{
+		if (gridView[x][y + 1] != 11)
+			gridView[x][y + 1] = gridLogic[x][y + 1];
+		if (gridLogic[x][y + 1] == 9)
+			gameOver = 1;
+	}
+	if (x != 0 && y != 0)
+	{
+		if (gridView[x - 1][y - 1] != 11)
+			gridView[x - 1][y - 1] = gridLogic[x - 1][y - 1];
+		if (gridLogic[x - 1][y - 1] == 9)
+			gameOver = 1;
+	}
+	if (x != 0 && y != minesweeperHeight - 1)
+	{
+		if (gridView[x - 1][y + 1] != 11)
+			gridView[x - 1][y + 1] = gridLogic[x - 1][y + 1];
+		if (gridLogic[x - 1][y + 1] == 9)
+			gameOver = 1;
+	}
+	if (x != minesweeperWidth - 1 && y != 0)
+	{
+		if (gridView[x + 1][y - 1] != 11)
+			gridView[x + 1][y - 1] = gridLogic[x + 1][y - 1];
+		if (gridLogic[x + 1][y - 1] == 9)
+			gameOver = 1;
+	}
+	if (x != minesweeperWidth - 1 && y != minesweeperHeight - 1)
+	{
+		if (gridView[x + 1][y + 1] != 11)
+			gridView[x + 1][y + 1] = gridLogic[x + 1][y + 1];
+		if (gridLogic[x + 1][y + 1] == 9)
+			gameOver = 1;
+	}
+}
+
+
